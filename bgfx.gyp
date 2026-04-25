@@ -4,6 +4,7 @@
 		'BIMG_DIR%': '../bimg',
 	},
 	'target_defaults': {
+		'default_configuration': 'Release',
 		'configurations': {
 			'Debug': {
 				'defines': [ 'BX_CONFIG_DEBUG=1' ],
@@ -12,6 +13,11 @@
 				'defines': [ 'BX_CONFIG_DEBUG=0' ],
 			},
 		},
+		# 'cflags_cc!': [ '-std=<(std_cpp)' ],
+		# 'cflags_cc+': [ '-std1=c++20' ],
+		# 'xcode_settings': {
+			# 'CLANG_CXX_LANGUAGE_STANDARD': 'c++20',
+		# },
 	},
 	'targets': [
 		{
@@ -39,10 +45,10 @@
 			],
 			'sources': [
 				'include/bgfx/c99/bgfx.h',
-				'include/bgfx.h',
-				'include/defines.h',
-				'include/embedded_shader.h',
-				'include/platform.h',
+				'include/bgfx/bgfx.h',
+				'include/bgfx/defines.h',
+				'include/bgfx/embedded_shader.h',
+				'include/bgfx/platform.h',
 				# 'src/amalgamated.cpp',
 				'src/bgfx.cpp',
 				'src/bgfx.idl.inl',
@@ -204,15 +210,26 @@
 			],
 		},
 		{
+			'variables': {
+				'conditions': [
+					['OS=="android"', {'Compat_PATH': []}],
+					['OS=="linux"', {'Compat_PATH': ['<(BX_DIR)/include/compat/linux']}],
+					['OS=="mac"', {'Compat_PATH': ['<(BX_DIR)/include/compat/osx']}],
+					['OS=="ios"', {'Compat_PATH': ['<(BX_DIR)/include/compat/ios']}],
+					['OS=="win"', {'Compat_PATH': ['<(BX_DIR)/include/compat/msvc']}],
+				],
+			},
 			'target_name': 'libbx',
 			'type': 'static_library',
 			'include_dirs': [
 				'<(BX_DIR)/include',
 				'<(BX_DIR)/3rdparty',
+				'<@(Compat_PATH)',
 			],
 			'direct_dependent_settings': {
 				'include_dirs': [
 					'<(BX_DIR)/include',
+					'<@(Compat_PATH)',
 				],
 			},
 			'defines': ['CATCH_AMALGAMATED_CUSTOM_MAIN'],
