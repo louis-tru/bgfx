@@ -99,18 +99,23 @@
 				'src/nvapi.cpp',
 				'src/nvapi.h',
 				'src/renderer.h',
-				# 'src/renderer_agc.cpp', # PlayStation 5
+				'src/renderer_d3d.h', # Direct3D 9/11/12 definitions
+				'src/renderer_d3d11.cpp',
+				'src/renderer_d3d11.h',
+				'src/renderer_d3d12.cpp',
+				'src/renderer_d3d12.h',
+				'src/renderer_agc.cpp', # PlayStation 5
 				'src/renderer_gl.cpp',
 				'src/renderer_gl.h',
-				# 'src/renderer_gnm.cpp', # PlayStation 4
+				'src/renderer_gnm.cpp', # PlayStation 4
 				'src/renderer_mtl.cpp',
 				'src/renderer_mtl.h',
 				'src/renderer_noop.cpp',
-				# 'src/renderer_nvn.cpp', # Nintendo Switch
+				'src/renderer_nvn.cpp', # Nintendo Switch
 				'src/renderer_vk.cpp',
 				'src/renderer_vk.h',
-				# 'src/renderer_webgpu.cpp',
-				# 'src/renderer_webgpu.h',
+				'src/renderer_webgpu.cpp',
+				'src/renderer_webgpu.h',
 				'src/shader.cpp',
 				'src/shader.h',
 				'src/topology.cpp',
@@ -173,9 +178,12 @@
 					],
 				}],
 				['OS=="mac"', {
+					'include_dirs': [
+						# '3rdparty/khronos', # for OpenGL headers on macOS
+					],
 					'cflags_cc': ['-x objective-c++'],
 					'defines': [
-						# 'BGFX_CONFIG_RENDERER_OPENGL=33'
+						# 'BGFX_CONFIG_RENDERER_OPENGL=33', # OpenGL 3.3
 						'BGFX_CONFIG_RENDERER_METAL=1',
 					],
 				}],
@@ -198,13 +206,6 @@
 						# 'BGFX_CONFIG_RENDERER_OPENGL=44',
 						'BGFX_CONFIG_RENDERER_DIRECT3D11=1',
 						'BGFX_CONFIG_RENDERER_DIRECT3D12=1',
-					],
-					'sources': [
-						'src/renderer_d3d.h',
-						'src/renderer_d3d11.cpp',
-						'src/renderer_d3d11.h',
-						'src/renderer_d3d12.cpp',
-						'src/renderer_d3d12.h',
 					],
 				}],
 			],
